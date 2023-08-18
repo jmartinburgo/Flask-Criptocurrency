@@ -3,11 +3,17 @@ class Table():
     def __init__(self,table_name,*args):
         self.table=table_name
         #self.columns= "(users,name,username,email,password)"
-        self.columns= "(%s)"%",".join(args)
+        self.columns= "(%s)" %",".join(args)
+        self.columnsList= args
 
         if isnewtable(table_name):
+            create_data= ""
+            for column in self.columnsList:
+                create_data += "%s varchar(100)," %column
+
             cur=mysql.connection.cursor()
-            cur.execute("CREATE TABLE %s%s" %(self.table,self.columns))
+            print("CREATE TABLE %s(%s)" %(self.table,create_data[:len(create_data)-1]))
+            cur.execute("CREATE TABLE %s(%s)" %(self.table,create_data[:len(create_data)-1]))
             cur.close()
 
     def getall(self):
@@ -33,7 +39,7 @@ class Table():
         cur.close()
 
     def drop(self):
-        cur=mysql.connect.cursor()
+        cur=mysql.connection.cursor()
         cur.execute("DROP TABLE %s" %self.table)
         cur.close()
 
@@ -43,7 +49,7 @@ class Table():
             data+= "\"%s\"," %(arg)
         
         cur=mysql.connection.cursor()
-        cur.execute("INSERT INTO %s %s VALUES (%s)" %(self.table, self.columns,data[:len(data)-1]))
+        cur.execute("INSERT INTO %s%s VALUES(%s)" %(self.table, self.columns,data[:len(data)-1]))
         mysql.connection.commit()
         cur.close()
 
