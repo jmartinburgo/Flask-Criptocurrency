@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Shocwave - Register</title>
 </head>
 <body>
-    <h1>Register</h1>
-    <form action="" method="POST">
+    <div class="container">
+        <form action="" method="POST">
+            <div class="form-label-group">
+                <input type="text" autofocus="autofocus" required="required" placeholder="Full Name"   class="form-control" name="name" id="inputName" value={{request.form.name}} >
+                <label for="">Full Name</label>
+            </div>
+            <div class="form-label-group">
+                <input type="text"  autofocus="autofocus" required="required" placeholder="Username" class="form-control" name="username" id="inputUsername" value={{request.form.username}}>
+                <label for="">Username</label>
+            </div>
+            <div class="form-label-group">
+                <input type="text"  autofocus="autofocus" required="required" placeholder="Email" class="form-control" name="email" id="inputEmail" value={{request.form.email}}>
+                <label for="">Email</label>
+            </div>
+            <div class="form-label-group">
+                <input type="password"  autofocus="autofocus" required="required" placeholder="Password" class="form-control" name="password" id="inputPassword" value={{request.form.password}}>
+                <label for="">Password</label>
+            </div>
+            <div class="form-label-group">
+                <input type="password"  autofocus="autofocus" required="required" placeholder="Confirm Password" class="form-control" name="confirm" id="confirmPassword" value={{request.form.confirm}}>
+                <label for="">Confirm Password</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+        
+    </div>
+    
+    
 
-        <input type="text" value={{request.form.name}}><label for="">Full Name</label>
-        <input type="text" value={{request.form.email}}><label for="">Email</label>
-        <input type="text" value={{request.form.username}}><label for="">username</label>
-        <input type="text" value={{request.form.password}}><label for="">Password</label>
-        <input type="text" value={{request.form.confirm}}><label for="">Confirm Password</label>
-        <button type="submit">Register</button>
+        
+        
+        
+        
+        
+        
 
     </form>
 </body>

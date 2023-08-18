@@ -74,7 +74,7 @@ def isnewtable(tableName):
         return False
 
 
-def innewuser(username):
+def isnewuser(username):
     users=Table("users", "name", "email", "username", "password")
     data=users.getall()
     usernames=[user.get('username') for user in data]
