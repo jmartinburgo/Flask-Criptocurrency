@@ -18,7 +18,7 @@ class Table():
 
     def getall(self):
         cur=mysql.connection.cursor()
-        result=cur.execute("SELECT * FROM %s WHERE %s" %self.table)
+        cur.execute("SELECT * FROM %s" %self.table)
         data=cur.fetchall()
         return data
 
@@ -28,7 +28,7 @@ class Table():
         cur=mysql.connection.cursor()
         result=cur.execute("SELECT * FROM %s WHERE %s =\"%s\"" %(self.table, search,value))
         if result >0:
-            data=cur.fetchall()
+            data=cur.fetchone()
             cur.close()
             return data
 
