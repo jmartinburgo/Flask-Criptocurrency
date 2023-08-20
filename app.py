@@ -106,7 +106,7 @@ def dashboard():
 
 @app.route('/')
 def index():
-    test_blockchain()
+    send_money("BANK","jmartinburgo19",100)
     return render_template('index.html')
 
 if __name__ == '__main__':

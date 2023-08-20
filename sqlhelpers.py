@@ -1,6 +1,12 @@
 from app import mysql, session
 from blockchain import Block, Blockchain
 
+class InvalidTransactionExcepion(Exception): 
+    pass
+
+class InsufficientFundsException(Exception):
+    pass
+
 
 class Table():
     def __init__(self,table_name,*args):
@@ -87,6 +93,39 @@ def isnewuser(username):
     usernames=[user.get('username') for user in data]
 
     return False if username in usernames else True
+
+def send_money(sender,recipient,amount):
+    try:
+        amount=float(amount)
+    except ValueError:
+        raise InvalidTransactionExcepion("Invalid Transaction")
+    
+    if amount > get_balance(sender) and sender != "BANK":
+        raise InsufficientFundsException("Insuficcient Funds")
+    elif sender == recipient or amount <= 0.00:
+        raise InvalidTransactionExcepion("Invalid Transaction")
+    elif isnewuser(recipient):
+        raise InvalidTransactionExcepion("User Does Not Exist")
+    
+    blockchain= get_blockchain()
+    number= len(blockchain.chain)+1
+    data= "%s-->%s-->%s" %(sender,recipient,amount)
+    blockchain.mine(Block(number,data=data))
+    sync_blockchain(blockchain)
+
+    
+
+def get_balance(username):
+    balance= 0.00
+    blockchain= get_blockchain()
+    for block in blockchain.chain:
+        data= block.data.split("-->")
+        if username == data[0]:
+            balance -= float(data[2])
+        elif username ==data[1]:
+            balance += float(data[2])
+    return balance
+
 
 def get_blockchain():
     blockchain= Blockchain()
