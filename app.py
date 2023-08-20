@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from sqlhelpers import *
 from forms import *
 from functools import wraps
+import time
 
 load_dotenv()
 
@@ -102,7 +103,7 @@ def transaction():
 
         return redirect(url_for('transaction'))
         
-    return render_template('transaction.html',balance=balance, form=form)
+    return render_template('transaction.html',balance=balance, form=form, page='transaction')
 
 
 @app.route('/buy', methods=['GET','POST'])
@@ -120,7 +121,7 @@ def buy():
 
         return redirect(url_for('dashboard'))
     
-    return render_template('transaction.html',balance=balance, form=form)
+    return render_template('buy.html',balance=balance, form=form, page='buy')
 
 
 
@@ -137,7 +138,9 @@ def logout():
 @app.route("/dashboard")
 @is_logged_in
 def dashboard():
-    return render_template('dashboard.html',session=session)
+    blockchain=get_blockchain().chain
+    ct= time.strftime("%I:%M %p")
+    return render_template('dashboard.html',session=session, ct=ct,blockchain=blockchain,page='dashboard')
 
 
 
