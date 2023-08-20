@@ -1,4 +1,7 @@
 from app import mysql, session
+from blockchain import Block, Blockchain
+
+
 class Table():
     def __init__(self,table_name,*args):
         self.table=table_name
@@ -37,6 +40,10 @@ class Table():
         cur.execute("DELETE FROM %s WHERE %s =\"%s\"" %(self.table, search,value))
         mysql.connection.commit()
         cur.close()
+
+    def deleteall(self):
+        self.drop()
+        self.__init__(self.table,*self.columnsList)
 
     def drop(self):
         cur=mysql.connection.cursor()
@@ -80,3 +87,21 @@ def isnewuser(username):
     usernames=[user.get('username') for user in data]
 
     return False if username in usernames else True
+
+def get_blockchain():
+    blockchain= Blockchain()
+    blockchain_sql = Table("blockchain","number","hash","previous","data","nonce")
+    for b in blockchain_sql.getall():
+        blockchain.add(Block(int(b.get('number')),b.get('previous'),b.get('data'),int(b.get('nonce'))))
+
+    return blockchain
+
+def sync_blockchain(blockchain):
+    blockchain_sql = Table("blockchain","number","hash","previous","data","nonce")
+    blockchain_sql.deleteall()
+
+    for  block in blockchain.chain:
+        blockchain_sql.insert(str(block.number),block.hash(),block.previous_hash,block.data,block.nonce)
+
+
+
